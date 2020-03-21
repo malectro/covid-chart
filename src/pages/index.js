@@ -39,14 +39,18 @@ function Chart() {
     [Infinity, -Infinity],
   );
 
-  const padding = 20;
+  const paddingY = 20;
+  const paddingX = 4;
+  const rectWidth = (size.width - paddingX * 2) / totals.length - paddingX;
+  const halfRectWidth = rectWidth / 2;
+  const innerPadding = paddingX + halfRectWidth;
 
-  const yRange = [size.height - padding, 0 + padding];
+  const yRange = [size.height - paddingY, 0 + paddingY];
 
   const scalarY = scaleLinear(minmax, yRange);
   const scalarX = scaleLinear(
     [0, totals.length - 1],
-    [padding, size.width - padding],
+    [innerPadding, size.width - innerPadding],
   );
 
   const growths = data.map(({growth}) => growth);
@@ -54,8 +58,6 @@ function Chart() {
     [Math.min(...growths), Math.max(...growths)],
     yRange,
   );
-  const rectWidth = size.width / totals.length - 4;
-  const halfRectWidth = rectWidth / 2;
 
   return (
     <div className={css.container}>
