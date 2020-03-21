@@ -5,5 +5,18 @@
  */
 
 module.exports = {
-  /* Your site config here */
-}
+  plugins: [
+    'gatsby-plugin-typescript',
+    {
+      resolve: 'gatsby-plugin-postcss',
+      options: {
+        postCssPlugins: [
+          require('postcss-preset-env')({
+            stage: 2,
+            features: { 'nesting-rules': true },
+          }),
+        ],
+      },
+    },
+  ],
+};

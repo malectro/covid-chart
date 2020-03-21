@@ -1,0 +1,51 @@
+.root {
+  font: sans-serif;
+
+  display: flex;
+  flex-flow: column;
+
+  & * {
+    box-sizing: border-box;
+  }
+
+  & div {
+    display: inherit;
+  }
+}
+
+.chart {
+  position: relative;
+  flex-flow: column;
+  flex: 1 1 auto;
+  height: 400px;
+  border: 1px solid #000;
+}
+
+.dot {
+  fill: red;
+}
+
+.numbers {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  & > * {
+    position: absolute;
+    width: 20px;
+    margin-left: -10px;
+    margin-top: -20px;
+    text-align: center;
+  }
+}
+
+.dates {
+  position: relative;
+
+  & > * {
+    position: absolute;
+    width: 20px;
+    margin-left: -10px;
+    text-align: center;
+  }
+}
