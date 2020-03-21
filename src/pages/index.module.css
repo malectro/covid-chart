@@ -1,5 +1,5 @@
 .root {
-  font: sans-serif;
+  font-family: sans-serif;
 
   display: flex;
   flex-flow: column;
@@ -13,6 +13,11 @@
   }
 }
 
+.container {
+  position: relative;
+  flex-flow: column;
+}
+
 .chart {
   position: relative;
   flex-flow: column;
@@ -21,8 +26,19 @@
   border: 1px solid #000;
 }
 
+.chart > svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
 .dot {
   fill: red;
+}
+.rect {
+  fill: #aaaaff;
 }
 
 .numbers {
@@ -39,8 +55,21 @@
   }
 }
 
+.totals {
+  composes: numbers;
+}
+.growth {
+  composes: numbers;
+  color: white;
+
+  & > * {
+    margin-top: 4px;
+  }
+}
+
 .dates {
   position: relative;
+  padding-top: 4px;
 
   & > * {
     position: absolute;
