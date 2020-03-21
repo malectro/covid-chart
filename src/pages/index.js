@@ -108,11 +108,11 @@ function Chart() {
       <div className={css.legend}>
         <div className={css.legendTotal}>
           <div className={css.legendIcon} />
-          Total Cases
+          Total cases
         </div>
         <div className={css.legendGrowth}>
           <div className={css.legendIcon} />
-          Day-over-day Growth
+          New confirmed cases
         </div>
       </div>
 
