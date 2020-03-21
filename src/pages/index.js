@@ -8,6 +8,13 @@ export default () => (
   <div className={css.root}>
     <h1>Confirmed COVID-19 Cases in SF</h1>
     <Chart />
+    <p>
+      Up to date information at{' '}
+      <a href="https://www.sfdph.org/dph/alerts/coronavirus.asp">
+        https://www.sfdph.org/dph/alerts/coronavirus.asp
+      </a>
+      .
+    </p>
   </div>
 );
 
@@ -62,74 +69,74 @@ function Chart() {
 
   return (
     <div className={css.container}>
-    <div className={css.chart} ref={containerRef}>
-      <svg viewBox={`0 0 ${size.width} ${size.height}`}>
-        {data.map((day, index) => {
-          const y = scalarGrowth(day.growth);
-          return (
-            <rect
-              className={css.rect}
-              x={scalarX(index) - halfRectWidth}
-              y={y}
-              width={rectWidth}
-              height={size.height - y}
+      <div className={css.chart} ref={containerRef}>
+        <svg viewBox={`0 0 ${size.width} ${size.height}`}>
+          {data.map((day, index) => {
+            const y = scalarGrowth(day.growth);
+            return (
+              <rect
+                className={css.rect}
+                x={scalarX(index) - halfRectWidth}
+                y={y}
+                width={rectWidth}
+                height={size.height - y}
+              />
+            );
+          })}
+        </svg>
+
+        <div className={css.growth}>
+          {data.map((day, index) => (
+            <span style={{left: scalarX(index), top: scalarGrowth(day.growth)}}>
+              {day.growth}
+            </span>
+          ))}
+        </div>
+
+        <svg viewBox={`0 0 ${size.width} ${size.height}`}>
+          {totals.map((day, index) => (
+            <circle
+              className={css.dot}
+              cx={scalarX(index)}
+              cy={scalarY(day.total)}
+              r="5"
             />
-          );
-        })}
-      </svg>
+          ))}
+        </svg>
 
-      <div className={css.growth}>
-        {data.map((day, index) => (
-          <span style={{left: scalarX(index), top: scalarGrowth(day.growth)}}>
-            {day.growth}
-          </span>
-        ))}
-      </div>
-
-      <svg viewBox={`0 0 ${size.width} ${size.height}`}>
-        {totals.map((day, index) => (
-          <circle
-            className={css.dot}
-            cx={scalarX(index)}
-            cy={scalarY(day.total)}
-            r="5"
-          />
-        ))}
-      </svg>
-
-      <div className={css.totals}>
-        {totals.map((day, index) => (
-          <span style={{left: scalarX(index), top: scalarY(day.total)}}>
-            {day.total}
-          </span>
-        ))}
-      </div>
-
-      <div className={css.legend}>
-        <div className={css.legendTotal}>
-          <div className={css.legendIcon} />
-          Total cases
+        <div className={css.totals}>
+          {totals.map((day, index) => (
+            <span style={{left: scalarX(index), top: scalarY(day.total)}}>
+              {day.total}
+            </span>
+          ))}
         </div>
-        <div className={css.legendGrowth}>
-          <div className={css.legendIcon} />
-          New confirmed cases
+
+        <div className={css.legend}>
+          <div className={css.legendTotal}>
+            <div className={css.legendIcon} />
+            Total cases
+          </div>
+          <div className={css.legendGrowth}>
+            <div className={css.legendIcon} />
+            New confirmed cases
+          </div>
         </div>
       </div>
-
-    </div>
       <div className={css.dates}>
         {totals.map((day, index) => {
           const prev = totals[index - 1];
           return (
-          <span style={{left: scalarX(index)}}>
-            {day.date.getMonth() !== prev?.date.getMonth() ?
-              day.date.toLocaleDateString(undefined, {
-                month: 'short',
-                day: 'numeric',
-              })
-            : day.date.getDate()}
-          </span>
-        )})}
+            <span style={{left: scalarX(index)}}>
+              {day.date.getMonth() !== prev?.date.getMonth()
+                ? day.date.toLocaleDateString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                  })
+                : day.date.getDate()}
+            </span>
+          );
+        })}
       </div>
     </div>
   );
