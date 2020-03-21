@@ -1,3 +1,7 @@
+@value colorBlue: #aaaaff;
+@value colorRed: #ff2222;
+
+
 .root {
   font-family: sans-serif;
 
@@ -34,11 +38,47 @@
   height: 100%;
 }
 
+.legend {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #eee;
+
+  padding: 4px;
+  flex-flow: column;
+
+  & > * {
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.legendItem {
+  & .legendIcon {
+    width: 10px;
+    margin-right: 10px;
+  }
+}
+.legendTotal {
+  composes: legendItem;
+  & .legendIcon {
+    background: colorRed;
+  }
+}
+.legendGrowth {
+  composes: legendItem;
+  & .legendIcon {
+    background: colorBlue;
+  }
+}
+
 .dot {
-  fill: red;
+  fill: colorRed;
 }
 .rect {
-  fill: #aaaaff;
+  fill: colorBlue;
 }
 
 .numbers {
@@ -70,6 +110,7 @@
 .dates {
   position: relative;
   padding-top: 4px;
+  font-size: 12px;
 
   & > * {
     position: absolute;

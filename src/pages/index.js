@@ -103,15 +103,30 @@ function Chart() {
       </div>
 
       <div className={css.legend}>
+        <div className={css.legendTotal}>
+          <div className={css.legendIcon} />
+          Total Cases
+        </div>
+        <div className={css.legendGrowth}>
+          <div className={css.legendIcon} />
+          Day-over-day Growth
+        </div>
       </div>
 
     </div>
       <div className={css.dates}>
-        {totals.map((day, index) => (
+        {totals.map((day, index) => {
+          const prev = totals[index - 1];
+          return (
           <span style={{left: scalarX(index)}}>
-            {new Date(day.date).getDate()}
+            {day.date.getMonth() !== prev?.date.getMonth() ?
+              day.date.toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+              })
+            : day.date.getDate()}
           </span>
-        ))}
+        )})}
       </div>
     </div>
   );
@@ -136,7 +151,10 @@ const totals = [
   {date: '2020-3-19', total: 70},
   {date: '2020-3-20', total: 76},
   {date: '2020-3-21', total: 84},
-];
+].map(day => ({
+  ...day,
+  date: new Date(day.date),
+}));
 
 const data = totals.map((day, index) => {
   const prev = totals[index - 1];
