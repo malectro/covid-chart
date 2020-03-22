@@ -1,5 +1,6 @@
 import React from 'react';
 import {scaleLinear} from 'd3-scale';
+import sfData from '../../data/sf.json';
 //import parseIso from 'date-fns/parseISO';
 
 import css from './index.module.css';
@@ -142,6 +143,7 @@ function Chart() {
   );
 }
 
+/*
 const totals = [
   {date: '2020-03-04', total: 0},
   {date: '2020-03-05', total: 2},
@@ -163,6 +165,11 @@ const totals = [
   {date: '2020-03-21', total: 84},
   {date: '2020-03-22', total: 105},
 ].map(day => ({
+  ...day,
+  date: new Date(day.date),
+}));
+*/
+const totals = sfData.map(day => ({
   ...day,
   date: new Date(day.date),
 }));
