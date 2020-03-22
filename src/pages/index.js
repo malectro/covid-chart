@@ -10,7 +10,7 @@ export default () => (
     <h1>Confirmed COVID-19 Cases in SF</h1>
     <Chart />
     <p>
-      Up to date information at{' '}
+      Site updated hourly. Up to date information at{' '}
       <a href="https://www.sfdph.org/dph/alerts/coronavirus.asp">
         https://www.sfdph.org/dph/alerts/coronavirus.asp
       </a>
