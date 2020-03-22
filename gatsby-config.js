@@ -5,6 +5,7 @@
  */
 
 module.exports = {
+  pathPrefix: 'covid/',
   plugins: [
     'gatsby-plugin-typescript',
     {
