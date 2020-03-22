@@ -161,6 +161,7 @@ const totals = [
   {date: '2020-03-19', total: 70},
   {date: '2020-03-20', total: 76},
   {date: '2020-03-21', total: 84},
+  {date: '2020-03-22', total: 105},
 ].map(day => ({
   ...day,
   date: new Date(day.date),
