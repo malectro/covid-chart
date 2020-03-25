@@ -1,5 +1,6 @@
 @value colorBlue: #aaaaff;
 @value colorRed: #ff2222;
+@value colorOrange: #dd9922;
 
 
 .root {
@@ -69,6 +70,12 @@
 .legendTotal {
   composes: legendItem;
   & .legendIcon {
+    background: colorOrange;
+  }
+}
+.legendDeaths {
+  composes: legendItem;
+  & .legendIcon {
     background: colorRed;
   }
 }
@@ -80,6 +87,9 @@
 }
 
 .dot {
+  fill: colorOrange;
+}
+.dotDeaths {
   fill: colorRed;
 }
 .rect {

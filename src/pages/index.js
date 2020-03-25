@@ -41,7 +41,7 @@ function Chart() {
     };
   }, []);
 
-  const minmax = totals.reduce(
+  const minmax = data.reduce(
     (minmax, day) => {
       return [Math.min(day.total, minmax[0]), Math.max(day.total, minmax[1])];
     },
@@ -50,7 +50,7 @@ function Chart() {
 
   const paddingY = 20;
   const paddingX = 4;
-  const rectWidth = (size.width - paddingX * 2) / totals.length - paddingX;
+  const rectWidth = (size.width - paddingX * 2) / data.length - paddingX;
   const halfRectWidth = rectWidth / 2;
   const innerPadding = paddingX + halfRectWidth;
 
@@ -58,7 +58,7 @@ function Chart() {
 
   const scalarY = scaleLinear(minmax, yRange);
   const scalarX = scaleLinear(
-    [0, totals.length - 1],
+    [0, data.length - 1],
     [innerPadding, size.width - innerPadding],
   );
 
@@ -95,7 +95,7 @@ function Chart() {
         </div>
 
         <svg viewBox={`0 0 ${size.width} ${size.height}`}>
-          {totals.map((day, index) => (
+          {data.map((day, index) => (
             <circle
               className={css.dot}
               cx={scalarX(index)}
@@ -106,17 +106,44 @@ function Chart() {
         </svg>
 
         <div className={css.totals}>
-          {totals.map((day, index) => (
+          {data.map((day, index) => (
             <span style={{left: scalarX(index), top: scalarY(day.total)}}>
               {day.total}
             </span>
           ))}
         </div>
 
+        <svg viewBox={`0 0 ${size.width} ${size.height}`}>
+          {data.map((day, index) =>
+            day.deaths ? (
+              <circle
+                className={css.dotDeaths}
+                cx={scalarX(index)}
+                cy={scalarY(day.deaths)}
+                r="5"
+              />
+            ) : null,
+          )}
+        </svg>
+
+        <div className={css.totals}>
+          {data.map((day, index) =>
+            day.deaths ? (
+              <span style={{left: scalarX(index), top: scalarY(day.deaths)}}>
+                {day.deaths}
+              </span>
+            ) : null,
+          )}
+        </div>
+
         <div className={css.legend}>
           <div className={css.legendTotal}>
             <div className={css.legendIcon} />
             Total cases
+          </div>
+          <div className={css.legendDeaths}>
+            <div className={css.legendIcon} />
+            Total deaths
           </div>
           <div className={css.legendGrowth}>
             <div className={css.legendIcon} />
@@ -125,8 +152,8 @@ function Chart() {
         </div>
       </div>
       <div className={css.dates}>
-        {totals.map((day, index) => {
-          const prev = totals[index - 1];
+        {data.map((day, index) => {
+          const prev = data[index - 1];
           return (
             <span style={{left: scalarX(index)}}>
               {day.date.getMonth() !== prev?.date.getMonth()

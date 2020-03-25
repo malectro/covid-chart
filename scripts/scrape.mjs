@@ -12,10 +12,12 @@ async function main() {
   const text = await getHttpText(
     'https://www.sfdph.org/dph/alerts/coronavirus.asp',
   );
-  const match = text.match(/Total Positive Cases: (\d+)/);
+  const casesMatch = text.match(/Total Positive Cases: (\d+)/);
+  const deathsMatch = text.match(/Deaths: (\d+)/);
 
-  if (match) {
-    const total = parseInt(match[1]);
+  if (casesMatch) {
+    const total = parseInt(casesMatch[1]);
+    const deaths = deathsMatch ? parseInt(deathsMatch[1]) : 0;
 
     const dataFile = projectDir + '/data/sf.json';
     const data = JSON.parse(await fs.readFile(dataFile));
@@ -24,10 +26,11 @@ async function main() {
     let day = data.find(day => day.date === currentDay);
 
     if (!day) {
-      day = {date: currentDay, total};
+      day = {date: currentDay, total, deaths};
       data.push(day);
     } else {
       day.total = total;
+      day.deaths = deaths;
     }
 
     await fs.writeFile(dataFile, JSON.stringify(data, undefined, ' '));
