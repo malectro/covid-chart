@@ -5,12 +5,13 @@ import sfData from '../../data/sf.json';
 
 import css from './index.module.css';
 
-export default () => (
+export default () => {
+  return (
   <div className={css.root}>
-    <h1>Confirmed COVID-19 Cases in SF</h1>
+    <h1>Confirmed COVID-19 Cases in San Francisco</h1>
     <Chart />
     <p>
-      Site updated hourly. Up to date information at{' '}
+      Accurate data updated every day 9:00am PT at{' '}
       <a href="https://www.sfdph.org/dph/alerts/coronavirus.asp">
         https://www.sfdph.org/dph/alerts/coronavirus.asp
       </a>
@@ -18,6 +19,7 @@ export default () => (
     </p>
   </div>
 );
+};
 
 function Chart() {
   const containerRef = React.useRef();
@@ -41,6 +43,10 @@ function Chart() {
     };
   }, []);
 
+  React.useLayoutEffect(() => {
+    containerRef.current.scrollLeft = 1000000;
+  }, []);
+
   const minmax = data.reduce(
     (minmax, day) => {
       return [Math.min(day.total, minmax[0]), Math.max(day.total, minmax[1])];
@@ -48,6 +54,7 @@ function Chart() {
     [Infinity, -Infinity],
   );
 
+  const minColumnSize = 40;
   const paddingY = 20;
   const paddingX = 4;
   const rectWidth = (size.width - paddingX * 2) / data.length - paddingX;
@@ -69,8 +76,9 @@ function Chart() {
   );
 
   return (
-    <div className={css.container}>
-      <div className={css.chart} ref={containerRef}>
+    <div className={css.scrollContainer}>
+    <div className={css.container} >
+      <div className={css.chart} ref={containerRef}style={{minWidth: data.length * minColumnSize}}>
         <svg viewBox={`0 0 ${size.width} ${size.height}`}>
           {data.map((day, index) => {
             const y = scalarGrowth(day.growth);
@@ -87,11 +95,12 @@ function Chart() {
         </svg>
 
         <div className={css.growth}>
-          {data.map((day, index) => (
-            <span style={{left: scalarX(index), top: scalarGrowth(day.growth)}}>
-              {day.growth}
-            </span>
-          ))}
+          {data.map((day, index) => {
+            const prevDay = data[index - 1];
+            return <span style={{left: scalarX(index), top: scalarGrowth(day.growth)}}>
+              {day.growth}{<p>{(prevDay ? day.growth / prevDay.total : 0).toLocaleString(undefined, {style: 'percent'})}</p>}
+            </span>;
+          })}
         </div>
 
         <svg viewBox={`0 0 ${size.width} ${size.height}`}>
@@ -136,20 +145,6 @@ function Chart() {
           )}
         </div>
 
-        <div className={css.legend}>
-          <div className={css.legendTotal}>
-            <div className={css.legendIcon} />
-            Total cases
-          </div>
-          <div className={css.legendDeaths}>
-            <div className={css.legendIcon} />
-            Total deaths
-          </div>
-          <div className={css.legendGrowth}>
-            <div className={css.legendIcon} />
-            New confirmed cases
-          </div>
-        </div>
       </div>
       <div className={css.dates}>
         {data.map((day, index) => {
@@ -166,6 +161,23 @@ function Chart() {
           );
         })}
       </div>
+    </div>
+        <div className={css.legend}>
+          <div className={css.legendData}>
+          <div className={css.legendTotal}>
+            <div className={css.legendIcon} />
+            Total cases
+          </div>
+          <div className={css.legendDeaths}>
+            <div className={css.legendIcon} />
+            Total deaths
+          </div>
+          <div className={css.legendGrowth}>
+            <div className={css.legendIcon} />
+            New confirmed cases
+          </div>
+          </div>
+        </div>
     </div>
   );
 }
