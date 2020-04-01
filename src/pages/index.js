@@ -302,7 +302,8 @@ const totals = sfData.map(day => ({
   date: new Date(day.date),
 }));
 
+const currentTime = new Date();
 const data = totals.map((day, index) => {
   const prev = totals[index - 1];
   return {...day, growth: day.total - (prev?.total ?? 0)};
-});
+}).filter(day => 100 * day.date.getUTCMonth() + day.date.getUTCDate() <= currentTime.getMonth() * 100 + currentTime.getDate());

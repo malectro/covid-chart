@@ -17,6 +17,7 @@
     "classnames": "^2.2.6",
     "d3-scale": "^3.2.1",
     "date-fns": "^2.11.0",
+    "date-fns-tz": "^1.0.10",
     "gatsby": "^2.19.45",
     "gatsby-plugin-postcss": "^2.2.0",
     "gatsby-plugin-typescript": "^2.3.0",
