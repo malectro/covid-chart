@@ -3,7 +3,6 @@ import http from 'https';
 import {promises as fs} from 'fs';
 import {dirname} from 'path';
 import dateFns from 'date-fns';
-import {utcToZonedTime} from 'date-fns-tz';
 
 const fileUrl = new URL(import.meta.url);
 const fileDir = dirname(fileUrl.pathname);
@@ -23,7 +22,7 @@ async function main() {
     const dataFile = projectDir + '/data/sf.json';
     const data = JSON.parse(await fs.readFile(dataFile));
 
-    const currentDay = dateFns.startOfDay(utcToZonedTime(new Date(), 'America/Los Angeles')).toISOString();
+    const currentDay = dateFns.startOfDay(new Date()).toISOString();
     let day = data.find(day => day.date === currentDay);
 
     if (!day) {
