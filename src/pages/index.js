@@ -16,7 +16,8 @@ export default () => {
         <a href="https://www.sfdph.org/dph/alerts/coronavirus.asp">
           https://www.sfdph.org/dph/alerts/coronavirus.asp
         </a>
-        .
+        . Source code at{' '}
+        <a href="https://github.com/malectro/covid-chart">github</a>.
       </p>
     </div>
   );
@@ -78,26 +79,32 @@ function Chart() {
 
   const minmax = data.reduce(
     (minmax, day) => {
-      return [Math.max(Math.min(day.total, minmax[0]), 1), Math.max(day.total, minmax[1])];
+      return [
+        Math.max(Math.min(day.total, minmax[0]), 1),
+        Math.max(day.total, minmax[1]),
+      ];
     },
     [Infinity, -Infinity],
   );
 
-  const scalarY = scaleFunc.copy().domain(minmax).range(yRange);
+  const scalarY = scaleFunc
+    .copy()
+    .domain(minmax)
+    .range(yRange);
   const scalarX = scaleLinear(
     [0, data.length - 1],
     [innerPadding, size.width - innerPadding],
   );
 
   const growths = data.map(({growth}) => growth);
-  const scalarGrowth = scaleFunc.copy().domain(
-    [Math.max(Math.min(...growths), 1), Math.max(...growths)],
-  ).range(
-    yRange,
-  );
+  const scalarGrowth = scaleFunc
+    .copy()
+    .domain([Math.max(Math.min(...growths), 1), Math.max(...growths)])
+    .range(yRange);
 
-  const getTotal = day => day.total > 0 ? scalarY(day.total) : yRange[0];
-  const getGrowth = day => day.growth > 0 ? Math.min(scalarGrowth(day.growth), 360) : 360;
+  const getTotal = day => (day.total > 0 ? scalarY(day.total) : yRange[0]);
+  const getGrowth = day =>
+    day.growth > 0 ? Math.min(scalarGrowth(day.growth), 360) : 360;
 
   return (
     <div className={css.scrollContainer}>
@@ -250,7 +257,10 @@ function Chart() {
         <div className={css.legendData}>
           <label>
             Scale:{' '}
-            <select value={scale} onChange={event => setScale(event.currentTarget.value)}>
+            <select
+              value={scale}
+              onChange={event => setScale(event.currentTarget.value)}
+            >
               <option value="linear">linear</option>
               <option value="log">logarithmic</option>
             </select>
